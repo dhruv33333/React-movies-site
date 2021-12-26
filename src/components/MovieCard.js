@@ -22,7 +22,7 @@ class MovieCard extends Component {
                     <img src={this.props.movie.Poster} alt="movie-poster" />
                 </div>
 
-                <div className="right">
+                <div className="right"> 
                     <div className="title">{movie.Title}</div>
                     <div className="plot">{movie.Plot}</div>
                     <div className="footer">
