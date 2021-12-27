@@ -3,29 +3,21 @@ import { data } from "../data";
 import Navbar from "./Navbar";
 import MovieCard from "./MovieCard";
 import { addMovies, setShowFavourites } from "../actions";
+import { connect } from "react-redux";
 
 class App extends React.Component {
 
-  componentDidMount()
-  {
+  componentDidMount() {
     console.log("didMount");
-    const { store } = this.props;   //destructuring
-
-    store.subscribe(() => {
-      console.log('UPDATed');
-      console.log(this.props.store.getState());
-      this.forceUpdate();
-    })
-
-    store.dispatch(addMovies(data));
+    this.props.dispatch(addMovies(data));
   }
 
   isMovieFavourite = (movie) => {
-    const { favourites } = this.props.store.getState().movies;
+    const { movies } = this.props;
 
-    const index = favourites.indexOf(movie);
+    const index = movies.favourites.indexOf(movie);
 
-    if(index !== -1) {
+    if (index !== -1) {
       // movie found
       return true;
     }
@@ -33,18 +25,19 @@ class App extends React.Component {
   }
 
   onChangeTab = (val) => {
-    this.props.store.dispatch(setShowFavourites(val));
+    this.props.dispatch(setShowFavourites(val));
   }
 
   render() {
     console.log("RENDER");
-    const { movies, search } = this.props.store.getState();
-    const { list, favourites, showFavourites} = movies;
+    const { movies, search } = this.props;
+    const { list, favourites, showFavourites } = movies;
 
     const displayMovies = showFavourites ? favourites : list;
+
     return (
       <div className="App">
-        <Navbar search={search} dispatch={this.props.store.dispatch}/>
+        <Navbar />
         <div className="main">
           <div className="tabs">
             <div className={`tab ${showFavourites ? '' : 'active-tabs'}`} onClick={() => this.onChangeTab(false)}>Movies</div>
@@ -54,11 +47,11 @@ class App extends React.Component {
           <div className="list">
             {
               displayMovies.map((movie, index) => (
-                <MovieCard 
-                movie={movie} 
-                key={index} 
-                dispatch={this.props.store.dispatch}
-                isFavourite={this.isMovieFavourite(movie)}  
+                <MovieCard
+                  movie={movie}
+                  key={index}
+                  dispatch={this.props.dispatch}
+                  isFavourite={this.isMovieFavourite(movie)}
                 />
               ))
             }
@@ -70,4 +63,22 @@ class App extends React.Component {
   }
 }
 
-export default App;
+// class AppWrapper extends React.Component {
+//   render() {
+//     return (
+//       <StoreContext.Consumer>
+//         {(store) => <App store={store} />}
+//       </StoreContext.Consumer>
+//     );
+//   }
+// }
+
+function mapStateToProps(state) {
+  return {
+    movies: state.movies,
+    search: state.search
+  }
+}
+
+const connectedAppComponent = connect(mapStateToProps)(App);
+export default connectedAppComponent;
