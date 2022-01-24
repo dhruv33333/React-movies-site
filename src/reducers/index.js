@@ -12,7 +12,7 @@ export function movies (state = initialMoviesState, action){
     switch(action.type){
         case ADD_MOVIES:
             return {
-                ...state,                          //spread operator (just copies the object after ...)
+                ...state,                          
                 list: action.movies
             }
         case ADD_TO_FAVOURITES:
@@ -72,5 +72,3 @@ export default combineReducers({
     movies,
     search
 })
-// action is an object
-// reducer is a function

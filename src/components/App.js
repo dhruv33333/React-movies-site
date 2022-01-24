@@ -8,7 +8,6 @@ import { connect } from "react-redux";
 class App extends React.Component {
 
   componentDidMount() {
-    console.log("didMount");
     this.props.dispatch(addMovies(data));
   }
 
@@ -18,7 +17,6 @@ class App extends React.Component {
     const index = movies.favourites.indexOf(movie);
 
     if (index !== -1) {
-      // movie found
       return true;
     }
     return false;
@@ -29,7 +27,6 @@ class App extends React.Component {
   }
 
   render() {
-    console.log("RENDER");
     const { movies, search } = this.props;
     const { list, favourites, showFavourites } = movies;
 
@@ -62,16 +59,6 @@ class App extends React.Component {
     );
   }
 }
-
-// class AppWrapper extends React.Component {
-//   render() {
-//     return (
-//       <StoreContext.Consumer>
-//         {(store) => <App store={store} />}
-//       </StoreContext.Consumer>
-//     );
-//   }
-// }
 
 function mapStateToProps(state) {
   return {
